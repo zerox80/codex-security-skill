@@ -1,0 +1,5 @@
+interface:
+  display_name: "Chrome-Recherche"
+  short_description: "Webrecherchen und Quellenprüfung mit Chrome"
+policy:
+  allow_implicit_invocation: true
