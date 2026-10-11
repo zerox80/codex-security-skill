@@ -1,3 +1,0 @@
-interface:
-  display_name: "Repository Logic Audit"
-  short_description: "Read-only logic audit with three-agent validation"
