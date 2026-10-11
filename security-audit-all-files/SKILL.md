@@ -1,11 +1,11 @@
 ---
 name: security-audit-all-files
-description: "Führt vollständige Security-Audits über alle Code-Dateien eines Projekts außerhalb von Punkt-Verzeichnissen durch, prüft jeden Finding-Kandidaten mehrfach und berichtet ausschließlich belegte P1-, P2- und P3-Findings. Verwenden bei angeforderten vollständigen Sicherheitsprüfungen; nicht für allgemeine Code-Reviews oder reine Diff-Reviews."
+description: "Führt vollständige Security-Audits über alle Code-Dateien eines Projekts außerhalb von Punkt-Verzeichnissen durch, prüft jeden Finding-Kandidaten mehrfach und berichtet ausschließlich belegte P0-, P1-, P2- und P3-Findings. Verwenden bei angeforderten vollständigen Sicherheitsprüfungen; nicht für allgemeine Code-Reviews oder reine Diff-Reviews."
 ---
 
 # Security Audit – alle Code-Dateien
 
-Prüfe das gesamte angegebene Projekt auf konkrete Sicherheitslücken. „ALLE Dateien“ bedeutet in diesem Skill **ALLE Code-Dateien außerhalb von Punkt-Verzeichnissen** im vereinbarten Projektumfang. Die Vorgaben sind vollständige Code-Dateiabdeckung innerhalb dieses Umfangs, mehrfache Gegenprüfung und ausschließlich bestätigte Findings der Prioritäten P1, P2 und P3. Ein Audit allein autorisiert keine Fehlerbehebung oder Veröffentlichung.
+Prüfe das gesamte angegebene Projekt auf konkrete Sicherheitslücken. „ALLE Dateien“ bedeutet in diesem Skill **ALLE Code-Dateien außerhalb von Punkt-Verzeichnissen** im vereinbarten Projektumfang. Die Vorgaben sind vollständige Code-Dateiabdeckung innerhalb dieses Umfangs, mehrfache Gegenprüfung und ausschließlich bestätigte Findings der Prioritäten P0, P1, P2 und P3. Ein Audit allein autorisiert keine Fehlerbehebung oder Veröffentlichung.
 
 ## Verbindlicher Verzeichnisausschluss
 
@@ -42,20 +42,21 @@ Führe projektseitige Programme oder Tests nur nach Prüfung ihrer relevanten Ne
 
 ## Prioritäten und Bericht
 
-Verwende für diesen Skill ausschließlich diese drei Berichtsstufen:
+Verwende für diesen Skill ausschließlich diese vier Berichtsstufen:
 
-- **P1 – hoch bis kritisch:** Nachgewiesene schwerwiegende Sicherheitswirkung, die dringend behoben werden sollte, etwa weitreichender unberechtigter Zugriff, Codeausführung oder erheblicher Datenabfluss unter realistischen Voraussetzungen.
+- **P0 – kritisch:** Nachgewiesene katastrophale, weitreichende Sicherheitswirkung ohne besondere Angriffsvoraussetzungen, etwa eine unmittelbar ausnutzbare vollständige Systemkompromittierung. Erfordert sofortige Behebung.
+- **P1 – hoch:** Nachgewiesene schwerwiegende Sicherheitswirkung, die dringend behoben werden sollte, etwa weitreichender unberechtigter Zugriff, Codeausführung oder erheblicher Datenabfluss unter realistischen Voraussetzungen.
 - **P2 – mittel:** Konkrete relevante Sicherheitslücke mit begrenzterem Schaden oder zusätzlichen realistischen Angriffsvoraussetzungen.
 - **P3 – niedrig:** Belegte Sicherheitslücke mit geringer, aber tatsächlicher Auswirkung. Keine rein vorsorglichen Härtungsvorschläge.
 
-P1 ist hier die höchste Berichtsstufe und umfasst auch kritische Auswirkungen. Benenne deren tatsächliche Schwere ausdrücklich; verschweige oder verharmlose sie nicht wegen einer abweichenden P0-Konvention. Bewerte Priorität anhand von Wirkung und realistischen Voraussetzungen, nicht allein anhand eines Scanner-Scores.
+P0 ist hier die höchste Berichtsstufe. Benenne kritische Auswirkungen ausdrücklich. Bewerte Priorität anhand von Wirkung und realistischen Voraussetzungen, nicht allein anhand eines Scanner-Scores.
 
-Sortiere bestätigte Findings nach P1, P2, P3 und fasse Duplikate derselben Ursache zusammen. Gib je Finding an:
+Sortiere bestätigte Findings nach P0, P1, P2, P3 und fasse Duplikate derselben Ursache zusammen. Gib je Finding an:
 
-- `[P1|P2|P3]` und einen konkreten Titel;
+- `[P0|P1|P2|P3]` und einen konkreten Titel;
 - genaue Datei und eng begrenzte Zeilenstelle, bei Binärformaten eine passende Fundstellenangabe;
 - Ursache, erreichbarer Angriffspfad, Voraussetzungen und Sicherheitswirkung;
 - Nachweis sowie Ergebnis des Widerlegungsversuchs und der abschließenden Bestätigung, einschließlich relevanter Validierungsgrenzen;
 - eine gezielte Empfehlung zur Behebung, ohne ungefragt Änderungen vorzunehmen.
 
-Ergänze knapp den geprüften Stand, die Code-Dateiabdeckung und konkrete Einschränkungen. Abdeckungslücken sind keine Findings und müssen dennoch sichtbar bleiben. Berichte keine unbestätigten Verdachtsfälle, informativen Befunde oder zusätzlichen Prioritätsklassen. Gibt es keine bestätigten Findings, sage: „Keine bestätigten P1-, P2- oder P3-Findings im geprüften Umfang.“ Leite daraus keine garantierte Sicherheit ab.
+Ergänze knapp den geprüften Stand, die Code-Dateiabdeckung und konkrete Einschränkungen. Abdeckungslücken sind keine Findings und müssen dennoch sichtbar bleiben. Berichte keine unbestätigten Verdachtsfälle, informativen Befunde oder zusätzlichen Prioritätsklassen. Gibt es keine bestätigten Findings, sage: „Keine bestätigten P0-, P1-, P2- oder P3-Findings im geprüften Umfang.“ Leite daraus keine garantierte Sicherheit ab.

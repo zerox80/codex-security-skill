@@ -1,11 +1,11 @@
 ---
 name: logic-audit-all-files
-description: "Prüft sämtliche Code-Dateien eines Projekts außerhalb von Punkt-Verzeichnissen auf konkrete Logikfehler und berichtet ausschließlich belegte P1- und P2-Findings. Verwenden für vollständige projektweite Logikprüfungen; nicht für reine Diff-Reviews, Stilprüfungen oder eigenständige Security-Audits."
+description: "Prüft sämtliche Code-Dateien eines Projekts außerhalb von Punkt-Verzeichnissen auf konkrete Logikfehler und berichtet ausschließlich belegte P0-, P1-, P2- und P3-Findings. Verwenden für vollständige projektweite Logikprüfungen; nicht für reine Diff-Reviews, Stilprüfungen oder eigenständige Security-Audits."
 ---
 
 # Logikprüfung aller Code-Dateien
 
-Untersuche den gesamten angeforderten Projektumfang auf nachweisbare Fehler im Programmverhalten. Prüfe **alle Code-Dateien außerhalb von Punkt-Verzeichnissen**, nicht nur Änderungen oder ausgewählte Komponenten. Melde ausschließlich bestätigte P1- und P2-Findings. Eine Prüfanforderung allein umfasst keine Fehlerbehebung.
+Untersuche den gesamten angeforderten Projektumfang auf nachweisbare Fehler im Programmverhalten. Prüfe **alle Code-Dateien außerhalb von Punkt-Verzeichnissen**, nicht nur Änderungen oder ausgewählte Komponenten. Melde ausschließlich bestätigte P0-, P1-, P2- und P3-Findings. Eine Prüfanforderung allein umfasst keine Fehlerbehebung.
 
 ## Umfang und vollständige Abdeckung
 
@@ -31,7 +31,7 @@ Verfolge Kontroll- und Datenflüsse über Datei- und Komponentengrenzen. Untersu
 - asynchrone Abläufe, Nebenläufigkeit, Reihenfolge, Wiederholungen, Idempotenz und Fehlerbehandlung;
 - Schnittstellenverträge, Serialisierung, Zeit- und Datumslogik sowie Ressourcenlebenszyklen.
 
-Prüfe auch die Logik von Tests und Hilfscode. Ein fehlerhafter Test kann ein Finding sein, wenn sein konkreter Effekt die P1/P2-Schwelle erreicht; fehlende Testabdeckung allein genügt nicht. Performanceprobleme zählen nur bei belegter funktionaler Auswirkung unter realistischen Bedingungen. Stil, Refactoring-Wünsche, allgemeine Best Practices und rein hypothetische Probleme sind keine Findings. Weite die Aufgabe nicht auf einen separaten Security-Audit aus; ein nachgewiesener Logikfehler darf dennoch eine Sicherheitsauswirkung haben.
+Prüfe auch die Logik von Tests und Hilfscode. Ein fehlerhafter Test kann ein Finding sein, wenn sein konkreter Effekt eine der Berichtsstufen P0 bis P3 erreicht; fehlende Testabdeckung allein genügt nicht. Performanceprobleme zählen nur bei belegter funktionaler Auswirkung unter realistischen Bedingungen. Stil, Refactoring-Wünsche, allgemeine Best Practices und rein hypothetische Probleme sind keine Findings. Weite die Aufgabe nicht auf einen separaten Security-Audit aus; ein nachgewiesener Logikfehler darf dennoch eine Sicherheitsauswirkung haben.
 
 ## Kandidaten verifizieren
 
@@ -41,19 +41,21 @@ Bestätige verbleibende Kandidaten möglichst mit einer gezielten lokalen Reprod
 
 Verwirf widerlegte Kandidaten. Ungeklärte Annahmen und bloße Verdachtsfälle gehören in Arbeitsnotizen, nicht in die Findings. Erfinde keine Testergebnisse. Prüfe vor der Meldung erneut die konkrete Fundstelle und ob die Priorität durch die belegte Auswirkung gerechtfertigt ist.
 
-## Ausschließlich P1 und P2 berichten
+## Ausschließlich P0 bis P3 berichten
 
+- **P0 – kritisch:** Ein nachgewiesener Logikfehler mit katastrophaler, weitreichender Auswirkung ohne besondere Auslösebedingungen, etwa umfassender Datenverlust oder vollständiger Ausfall zentraler Abläufe. Erfordert sofortige Behebung.
 - **P1 – dringend:** Ein nachgewiesener Logikfehler mit schwerwiegender Auswirkung, etwa erheblicher Datenverlust oder Datenkorruption, Ausfall zentraler Abläufe oder weitreichend falsche Ergebnisse unter realistischen Voraussetzungen.
 - **P2 – relevant:** Ein nachgewiesener funktionaler Fehler mit begrenzterer Auswirkung oder engeren, realistischen Auslösebedingungen, der behoben werden sollte.
+- **P3 – niedrig:** Ein nachgewiesener funktionaler Fehler mit geringer, aber tatsächlicher Auswirkung. Keine bloßen Stilfragen oder Refactoring-Wünsche.
 
-P1 ist in diesem Skill die höchste Berichtsstufe und umfasst auch Auswirkungen, die andere Konventionen als P0 bezeichnen. Benenne kritische Auswirkungen ausdrücklich. Melde keine P0-, P3-, P4- oder rein informativen Findings und stufe geringfügige Fehler nicht künstlich auf P2 hoch.
+P0 ist die höchste Berichtsstufe. Bewerte die Priorität anhand der belegten Auswirkung und realistischen Voraussetzungen. Melde keine P4- oder rein informativen Findings und stufe geringfügige Fehler nicht künstlich hoch.
 
-Sortiere nach P1 und P2 und fasse mehrere Erscheinungsformen derselben Ursache zusammen. Gib je Finding an:
+Sortiere nach P0, P1, P2 und P3 und fasse mehrere Erscheinungsformen derselben Ursache zusammen. Gib je Finding an:
 
-- `[P1]` oder `[P2]` und einen konkreten Titel;
+- `[P0]`, `[P1]`, `[P2]` oder `[P3]` und einen konkreten Titel;
 - Datei und eng begrenzte Zeilenstelle, bei Notebooks eine geeignete Zellangabe;
 - Auslöser und Voraussetzungen, erwartetes gegenüber tatsächlichem Verhalten sowie Ursache und Auswirkung;
 - den Nachweis, einschließlich relevanter Grenzen der Verifikation;
 - einen gezielten Behebungsansatz, ohne ungefragt Änderungen vorzunehmen.
 
-Ergänze knapp den geprüften Stand, die Abdeckung als Anzahl geprüfter gegenüber erfassten Code-Dateien und konkrete Einschränkungen. Abdeckungslücken sind keine Findings, müssen aber sichtbar bleiben. Gibt es keine bestätigten Findings, schreibe: „Keine bestätigten P1- oder P2-Logikfehler im geprüften Umfang.“ Leite daraus keine Fehlerfreiheit ab.
+Ergänze knapp den geprüften Stand, die Abdeckung als Anzahl geprüfter gegenüber erfassten Code-Dateien und konkrete Einschränkungen. Abdeckungslücken sind keine Findings, müssen aber sichtbar bleiben. Gibt es keine bestätigten Findings, schreibe: „Keine bestätigten P0-, P1-, P2- oder P3-Logikfehler im geprüften Umfang.“ Leite daraus keine Fehlerfreiheit ab.
